@@ -283,4 +283,43 @@ public class ConfigurationVoiture
 		}
 	}
 	
+	public void updateColorOnIdChanged()
+	{
+		this.color = null;
+		for(ColorTemplate ct : colorsTemplate)
+		{
+			if(ct.getId().equalsIgnoreCase(colorId))
+			{
+				this.color = ct;
+				break;
+			}
+		}
+	}
+	
+	public void updateJanteOnIdChanged()
+	{
+		this.typeJante = null;
+		for(TypeJanteTemplate jt : typeJantesTemplate)
+		{
+			if(jt.getId().equalsIgnoreCase(typeJanteId))
+			{
+				this.typeJante = jt;
+				break;
+			}
+		}
+	}
+	
+	public void updateOptionOnIdChanged()
+	{
+		this.optionSup = null;
+		for(OptionSupTemplate ot : optionsSupsTemplate)
+		{
+			if(ot.getId().equalsIgnoreCase(optionSupId))
+			{
+				this.optionSup = ot;
+				break;
+			}
+		}
+	}
+	
 }

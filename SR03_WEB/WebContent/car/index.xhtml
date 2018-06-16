@@ -19,12 +19,12 @@
 	<script src="../JS/bootstrap.min.js"></script>
 </h:head>
 
-<body id="page">
+<body id="page" style="background:#f3f3f3;">
 
 	<header id="MainBar">
 		<div id="LightGreyNav" style="border-bottom-color: #FB621F; border-bottom-width: 5px; border-bottom-style: solid;">
 			<div class="container clearfix editeurBar">
-				<h1 class="navbar-text">Configuration d'une voiture</h1>
+				<h1 class="navbar-text"><span class="glyphicon glyphicon-align-left glyphicon-wrench" style="margin-right:15px;"></span>Configuration d'une voiture</h1>
 				<h1 class="navbar-text navbar-right"><b>Prix : <h:outputText id="outputprix" value="#{configurationVoiture.prix}"/>€</b></h1>
 			</div>
 		</div>
@@ -39,7 +39,7 @@
 					<h:selectOneMenu class="form-control" value="#{configurationVoiture.modeleId}">
 							<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
 						    <f:selectItems value="#{configurationVoiture.gestModele.modeleTemplate}" var="modele" itemValue="#{modele.id}" itemLabel="#{modele.nom}" />
-							<f:ajax event="valueChange" listener ="#{configurationVoiture.updateModeleOnIdChanged}" render="outputprix tableau-modele tableau-finition tableau-motorisation"></f:ajax>
+							<f:ajax event="valueChange" listener ="#{configurationVoiture.updateModeleOnIdChanged}" render="outputprix tableau-modele tableau-finition tableau-motorisation tableau-color tableau-jante tableau-option"></f:ajax>
 					</h:selectOneMenu>
 				</div>
 				<h:panelGroup id="tableau-modele">
@@ -47,12 +47,12 @@
 						<tr>
 							<th>Nom</th>
 							<th>Marque</th>
-							<th style="width:325px;">Prix</th>	
+							<th style="background-color: #FB621F !important; width:325px;">Prix</th>	
 						</tr>
 						<tr>
 							<td><h:outputText value="#{configurationVoiture.modele.nom}"/></td>
 							<td><h:outputText value="#{configurationVoiture.modele.marque}"/></td>
-							<td><h:outputText value="#{configurationVoiture.modele.prix}"/></td>
+							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.modele.prix}"/></td>
 						</tr>
 					</table>		
 				</h:panelGroup>
@@ -65,17 +65,17 @@
 						<h:selectOneMenu class="form-control" value="#{configurationVoiture.finitionId}">
 								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
 							    <f:selectItems value="#{configurationVoiture.finitionsTemplate}" var="finit" itemValue="#{finit.id}" itemLabel="#{finit.type}" />
-								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateFinitionOnIdChanged}" render="outputprix tableau-finition tableau-motorisation"></f:ajax>
+								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateFinitionOnIdChanged}" render="outputprix tableau-finition tableau-motorisation tableau-color tableau-jante tableau-option"></f:ajax>
 						</h:selectOneMenu>
 					</div>
 					<table class="table table-striped gpaTitle chargecenter">
 						<tr>
 							<th>Type de finition</th>
-							<th style="width:325px;">Prix</th>	
+							<th style="background-color: #FB621F !important; width:325px;">Prix</th>
 						</tr>
 						<tr>
 							<td><h:outputText value="#{configurationVoiture.finition.type}"/></td>
-							<td><h:outputText value="#{configurationVoiture.finition.prix}"/></td>
+							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.finition.prix}"/></td>
 						</tr>
 					</table>
 					</c:if>
@@ -95,12 +95,85 @@
 						<tr>
 							<th>Nom du moteur</th>
 							<th>Puissance</th>
-							<th style="width:325px;">Prix</th>	
+							<th style="background-color: #FB621F !important; width:325px;">Prix</th>
 						</tr>
 						<tr>
 							<td><h:outputText value="#{configurationVoiture.motorisation.nomMoteur}"/></td>
 							<td><h:outputText value="#{configurationVoiture.motorisation.puissance}"/></td>
-							<td><h:outputText value="#{configurationVoiture.motorisation.prix}"/></td>
+							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.motorisation.prix}"/></td>
+						</tr>
+					</table>
+					</c:if>
+				</h:panelGroup>
+				
+				<h:panelGroup id="tableau-color">
+					<c:if test="${not empty configurationVoiture.colorsTemplate}">
+					<div class="col-md-4 text-left lead">Couleur du véhicule : </div>
+					<div class="element1 col-md-4">
+						<h:selectOneMenu class="form-control" value="#{configurationVoiture.colorId}">
+								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
+							    <f:selectItems value="#{configurationVoiture.colorsTemplate}" var="colo" itemValue="#{colo.id}" itemLabel="#{colo.couleur}" />
+								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateColorOnIdChanged}" render="outputprix tableau-color"></f:ajax>
+						</h:selectOneMenu>
+					</div>
+					<table class="table table-striped gpaTitle chargecenter">
+						<tr>
+							<th>Couleur</th>
+							<th style="background-color: #FB621F !important; width:325px;">Prix</th>
+						</tr>
+						<tr>
+							<td><h:outputText value="#{configurationVoiture.color.couleur}"/></td>
+							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.color.prix}"/></td>
+						</tr>
+					</table>
+					</c:if>
+				</h:panelGroup>
+				
+				<h:panelGroup id="tableau-jante">
+					<c:if test="${not empty configurationVoiture.typeJantesTemplate}">
+					<div class="col-md-4 text-left lead">Choix des jantes : </div>
+					<div class="element1 col-md-4">
+						<h:selectOneMenu class="form-control" value="#{configurationVoiture.typeJanteId}">
+								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
+							    <f:selectItems value="#{configurationVoiture.typeJantesTemplate}" var="jan" itemValue="#{jan.id}" itemLabel="#{jan.matiere}" />
+								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateJanteOnIdChanged}" render="outputprix tableau-jante"></f:ajax>
+						</h:selectOneMenu>
+					</div>
+					<table class="table table-striped gpaTitle chargecenter">
+						<tr>
+							<th>Matière</th>
+							<th>Diamètre</th>
+							<th style="background-color: #FB621F !important; width:325px;">Prix</th>
+						</tr>
+						<tr>
+							<td><h:outputText value="#{configurationVoiture.typeJante.matiere}"/></td>
+							<td><h:outputText value="#{configurationVoiture.typeJante.diametre}"/></td>
+							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.typeJante.prix}"/></td>
+						</tr>
+					</table>
+					</c:if>
+				</h:panelGroup>
+				
+				<h:panelGroup id="tableau-option">
+					<c:if test="${not empty configurationVoiture.optionsSupsTemplate}">
+					<div class="col-md-4 text-left lead">Choix d'une option supplementaire : </div>
+					<div class="element1 col-md-4">
+						<h:selectOneMenu class="form-control" value="#{configurationVoiture.optionSupId}">
+								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
+							    <f:selectItems value="#{configurationVoiture.optionsSupsTemplate}" var="op" itemValue="#{op.id}" itemLabel="#{op.nom}" />
+								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateOptionOnIdChanged}" render="outputprix tableau-option"></f:ajax>
+						</h:selectOneMenu>
+					</div>
+					<table class="table table-striped gpaTitle chargecenter">
+						<tr>
+							<th>Nom</th>
+							<th>Description</th>
+							<th style="background-color: #FB621F !important; width:325px;">Prix</th>
+						</tr>
+						<tr>
+							<td><h:outputText value="#{configurationVoiture.optionSup.nom}"/></td>
+							<td><h:outputText value="#{configurationVoiture.optionSup.description}"/></td>
+							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.optionSup.prix}"/></td>
 						</tr>
 					</table>
 					</c:if>
