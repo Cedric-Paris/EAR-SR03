@@ -1,5 +1,7 @@
 package rest_project;
 
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.ws.rs.Consumes;
@@ -10,6 +12,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import model.Motorisation;
 import sr03.utc.fr.RequestLocal;
 
 @Stateless
@@ -54,6 +57,34 @@ public class RestWS
     public Response getFinitionsByModel(@QueryParam("mid") Integer mid)
     {
 		return Response.ok(this.request.getTypeFinitionByModele(mid)).build();
+    }
+	
+	@GET
+	@Path("/motorisationsfinition")
+	public Response getMotorisationByFinition(@QueryParam("fid") Integer finitionId)
+	{
+		return Response.ok(this.request.getMotorisationByFinition(finitionId)).build();
+    }
+	
+	@GET
+	@Path("/colorsfinition")
+	public Response getColorByFinition(@QueryParam("fid") Integer finitionId)
+	{
+		return Response.ok(this.request.getColorByFinition(finitionId)).build();
+    }
+
+	@GET
+	@Path("/typejantesfinition")
+	public Response getTypeJanteByFinition(@QueryParam("fid") Integer finitionId)
+	{
+		return Response.ok(this.request.getTypeJanteByFinition(finitionId)).build();
+    }
+   
+	@GET
+	@Path("/optionsupsfinition")
+	public Response getOptionSupByFinition(@QueryParam("fid") Integer finitionId)
+	{
+		return Response.ok(this.request.getOptionSupByFinition(finitionId)).build();
     }
 	
 	@GET

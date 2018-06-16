@@ -61,13 +61,41 @@ public class Request implements RequestLocal
 		 q.setParameter("modele", modeleId);
 		 
 		 return q.getResultList();
-}
+    }
     
     @SuppressWarnings("unchecked")
 	public List<Motorisation> getMotorisations()
     {
     	Query q = em.createQuery("SELECT m FROM Motorisation m");
 		return q.getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Motorisation> getMotorisationByFinition(Integer finitionId){
+		 Query q = em.createQuery("SELECT m.motorisations FROM TypeFinition m WHERE m.id =:finition ");
+		 q.setParameter("finition", finitionId);
+		 return q.getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Motorisation> getColorByFinition(Integer finitionId){
+		 Query q = em.createQuery("SELECT m.couleurs FROM TypeFinition m WHERE m.id =:finition ");
+		 q.setParameter("finition", finitionId);
+		 return q.getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Motorisation> getTypeJanteByFinition(Integer finitionId){
+		 Query q = em.createQuery("SELECT m.typeJantes FROM TypeFinition m WHERE m.id =:finition ");
+		 q.setParameter("finition", finitionId);
+		 return q.getResultList();
+    }
+    
+    @SuppressWarnings("unchecked")
+    public List<Motorisation> getOptionSupByFinition(Integer finitionId){
+		 Query q = em.createQuery("SELECT m.optionSups FROM TypeFinition m WHERE m.id =:finition ");
+		 q.setParameter("finition", finitionId);
+		 return q.getResultList();
     }
     
 	@SuppressWarnings("unchecked")

@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core">
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
 
 <h:head>
 	<title><h:outputText value="Creer votre voiture!" /></title>
@@ -21,25 +22,24 @@
 <body id="page">
 
 	<header id="MainBar">
-		<div id="LightGreyNav">
+		<div id="LightGreyNav" style="border-bottom-color: #FB621F; border-bottom-width: 5px; border-bottom-style: solid;">
 			<div class="container clearfix editeurBar">
-				<h:outputText value="Lecture WebService" escape="false" />
+				<h1 class="navbar-text">Configuration d'une voiture</h1>
+				<h1 class="navbar-text navbar-right"><b>Prix : <h:outputText id="outputprix" value="#{configurationVoiture.prix}"/>€</b></h1>
 			</div>
 		</div>
 	</header>
 
-	<main id="PageContenu" class="container" style="margin-top: 55px">
+	<main id="PageContenu" class="container" style="margin-top:100px">
 
-		<div class="col-sm-12 LeContenu">
-			<h1>Configuration d'une voiture</h1>
-			
+		<div class="col-sm-12 LeContenu">			
 			<h:form id="data">
 				<div class="col-md-4 text-left lead">Choix du modele : </div>
 				<div class="element1 col-md-4">
 					<h:selectOneMenu class="form-control" value="#{configurationVoiture.modeleId}">
 							<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
 						    <f:selectItems value="#{configurationVoiture.gestModele.modeleTemplate}" var="modele" itemValue="#{modele.id}" itemLabel="#{modele.nom}" />
-							<f:ajax event="valueChange" listener ="#{configurationVoiture.updateModeleOnIdChanged}" render="tableau-modele tableau-finition"></f:ajax>
+							<f:ajax event="valueChange" listener ="#{configurationVoiture.updateModeleOnIdChanged}" render="outputprix tableau-modele tableau-finition tableau-motorisation"></f:ajax>
 					</h:selectOneMenu>
 				</div>
 				<h:panelGroup id="tableau-modele">
@@ -47,7 +47,7 @@
 						<tr>
 							<th>Nom</th>
 							<th>Marque</th>
-							<th>Prix</th>	
+							<th style="width:325px;">Prix</th>	
 						</tr>
 						<tr>
 							<td><h:outputText value="#{configurationVoiture.modele.nom}"/></td>
@@ -57,25 +57,53 @@
 					</table>		
 				</h:panelGroup>
 				
-				<div class="col-md-4 text-left lead">Choix de la finition : </div>
-				<div class="element1 col-md-4">
-					<h:selectOneMenu class="form-control" value="#{configurationVoiture.finitionId}">
-							<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
-						    <f:selectItems value="#{configurationVoiture.gestFinition.finitionTemplate}" var="finit" itemValue="#{finit.id}" itemLabel="#{finit.type}" />
-							<f:ajax event="valueChange" listener ="#{configurationVoiture.updateModeleOnIdChanged}" render="tableau-finition"></f:ajax>
-					</h:selectOneMenu>
-				</div>
+				
 				<h:panelGroup id="tableau-finition">
+					<c:if test="${not empty configurationVoiture.finitionsTemplate}">
+					<div class="col-md-4 text-left lead">Choix de la finition : </div>
+					<div class="element1 col-md-4">
+						<h:selectOneMenu class="form-control" value="#{configurationVoiture.finitionId}">
+								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
+							    <f:selectItems value="#{configurationVoiture.finitionsTemplate}" var="finit" itemValue="#{finit.id}" itemLabel="#{finit.type}" />
+								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateFinitionOnIdChanged}" render="outputprix tableau-finition tableau-motorisation"></f:ajax>
+						</h:selectOneMenu>
+					</div>
 					<table class="table table-striped gpaTitle chargecenter">
 						<tr>
 							<th>Type de finition</th>
-							<th>Prix</th>	
+							<th style="width:325px;">Prix</th>	
 						</tr>
 						<tr>
-							<td><h:outputText value="#{configurationVoiture.modele.nom}"/></td>
-							<td><h:outputText value="#{configurationVoiture.modele.prix}"/></td>
+							<td><h:outputText value="#{configurationVoiture.finition.type}"/></td>
+							<td><h:outputText value="#{configurationVoiture.finition.prix}"/></td>
 						</tr>
-					</table>		
+					</table>
+					</c:if>
+				</h:panelGroup>
+				
+				<h:panelGroup id="tableau-motorisation">
+					<c:if test="${not empty configurationVoiture.motorisationsTemplate}">
+					<div class="col-md-4 text-left lead">Choix du moteur : </div>
+					<div class="element1 col-md-4">
+						<h:selectOneMenu class="form-control" value="#{configurationVoiture.motorisationId}">
+								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
+							    <f:selectItems value="#{configurationVoiture.motorisationsTemplate}" var="moto" itemValue="#{moto.id}" itemLabel="#{moto.nomMoteur}" />
+								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateMotorisationOnIdChanged}" render="outputprix tableau-motorisation"></f:ajax>
+						</h:selectOneMenu>
+					</div>
+					<table class="table table-striped gpaTitle chargecenter">
+						<tr>
+							<th>Nom du moteur</th>
+							<th>Puissance</th>
+							<th style="width:325px;">Prix</th>	
+						</tr>
+						<tr>
+							<td><h:outputText value="#{configurationVoiture.motorisation.nomMoteur}"/></td>
+							<td><h:outputText value="#{configurationVoiture.motorisation.puissance}"/></td>
+							<td><h:outputText value="#{configurationVoiture.motorisation.prix}"/></td>
+						</tr>
+					</table>
+					</c:if>
 				</h:panelGroup>
 			</h:form>	
 			

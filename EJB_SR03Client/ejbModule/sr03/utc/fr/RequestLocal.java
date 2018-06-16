@@ -3,6 +3,7 @@ package sr03.utc.fr;
 import java.util.List;
 
 import javax.ejb.Local;
+import javax.persistence.Query;
 
 import model.*;
 
@@ -20,6 +21,14 @@ public interface RequestLocal
 	public List<TypeFinition> getTypeFinitionByModele(Integer modeleId);
 	
 	public List<Motorisation> getMotorisations();
+	
+	public List<Motorisation> getMotorisationByFinition(Integer finitionId);
+	
+	public List<Motorisation> getColorByFinition(Integer finitionId);
+
+	public List<Motorisation> getTypeJanteByFinition(Integer finitionId);
+   
+	public List<Motorisation> getOptionSupByFinition(Integer finitionId);
 
 	public List<OptionSup> getOptionSupForVoiture(int voitureId);
 }
