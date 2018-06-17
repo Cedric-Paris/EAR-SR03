@@ -156,25 +156,27 @@
 				
 				<h:panelGroup id="tableau-option">
 					<c:if test="${not empty configurationVoiture.optionsSupsTemplate}">
-					<div class="col-md-4 text-left lead">Choix d'une option supplementaire : </div>
-					<div class="element1 col-md-4">
-						<h:selectOneMenu class="form-control" value="#{configurationVoiture.optionSupId}">
-								<f:selectItem itemValue="#{null}" itemLabel="--Select--" itemDisabled="true" />
-							    <f:selectItems value="#{configurationVoiture.optionsSupsTemplate}" var="op" itemValue="#{op.id}" itemLabel="#{op.nom}" />
-								<f:ajax event="valueChange" listener ="#{configurationVoiture.updateOptionOnIdChanged}" render="outputprix tableau-option"></f:ajax>
-						</h:selectOneMenu>
-					</div>
+					<div class="col-md-4 text-left lead">Choix des options supplementaires</div>
+					
 					<table class="table table-striped gpaTitle chargecenter">
 						<tr>
+							<th>.</th>
 							<th>Nom</th>
 							<th>Description</th>
 							<th style="background-color: #FB621F !important; width:325px;">Prix</th>
 						</tr>
-						<tr>
-							<td><h:outputText value="#{configurationVoiture.optionSup.nom}"/></td>
-							<td><h:outputText value="#{configurationVoiture.optionSup.description}"/></td>
-							<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{configurationVoiture.optionSup.prix}"/></td>
-						</tr>
+						<ui:repeat value="#{configurationVoiture.optionsSupsTemplate}" var="opt">
+							<tr>
+								<td>
+									<h:selectBooleanCheckbox value="#{configurationVoiture.checkMapOption[opt.id]}">
+										<f:ajax event="valueChange" render="outputprix tableau-option"/>
+									</h:selectBooleanCheckbox>
+								</td>
+								<td><h:outputText value="#{opt.nom}"/></td>
+								<td><h:outputText value="#{opt.description}"/></td>
+								<td style="border-color: #FB621F; border-width: 1px; border-style: solid;"><h:outputText value="#{opt.prix}"/></td>
+							</tr>	
+						</ui:repeat>
 					</table>
 					</c:if>
 				</h:panelGroup>

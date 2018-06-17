@@ -1,6 +1,8 @@
 package fr.car;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -35,8 +37,7 @@ public class ConfigurationVoiture
 	private TypeJanteTemplate typeJante;
 	private List<TypeJanteTemplate> typeJantesTemplate;
 	
-	private String optionSupId;
-	private OptionSupTemplate optionSup;
+	private Map<String,Boolean> checkMapOption;
 	private List<OptionSupTemplate> optionsSupsTemplate;
 	
 	@PostConstruct
@@ -56,7 +57,16 @@ public class ConfigurationVoiture
 		if(motorisation != null) val += Integer.parseInt(motorisation.getPrix());
 		if(color != null) val += Integer.parseInt(color.getPrix());
 		if(typeJante != null) val += Integer.parseInt(typeJante.getPrix());
-		if(optionSup != null) val += Integer.parseInt(optionSup.getPrix());
+		if(optionsSupsTemplate != null && checkMapOption != null)
+		{
+			for(OptionSupTemplate ot : optionsSupsTemplate)
+			{
+				if(checkMapOption.get(ot.getId()))
+				{
+					val += Integer.parseInt(ot.getPrix());
+				}
+			}
+		}
 		return val.toString();
 	}
 	
@@ -176,21 +186,12 @@ public class ConfigurationVoiture
 	public void setTypeJantesTemplate(List<TypeJanteTemplate> typeJantesTemplate) {
 		this.typeJantesTemplate = typeJantesTemplate;
 	}
-
-	public String getOptionSupId() {
-		return optionSupId;
+	public Map<String, Boolean> getCheckMapOption() {
+		return checkMapOption;
 	}
 
-	public void setOptionSupId(String optionSupId) {
-		this.optionSupId = optionSupId;
-	}
-
-	public OptionSupTemplate getOptionSup() {
-		return optionSup;
-	}
-
-	public void setOptionSup(OptionSupTemplate optionSup) {
-		this.optionSup = optionSup;
+	public void setCheckMapOption(Map<String, Boolean> checkMapOption) {
+		this.checkMapOption = checkMapOption;
 	}
 
 	public List<OptionSupTemplate> getOptionsSupsTemplate() {
@@ -229,8 +230,7 @@ public class ConfigurationVoiture
 		typeJanteId = null;
 		typeJante = null;
 		typeJantesTemplate = null;
-		optionSupId = null;
-		optionSup = null;
+		checkMapOption = null;
 		optionsSupsTemplate = null;
 	}
 	
@@ -266,8 +266,13 @@ public class ConfigurationVoiture
 		color = null;
 		typeJanteId = null;
 		typeJante = null;
-		optionSupId = null;
-		optionSup = null;
+		checkMapOption = new HashMap<String,Boolean>();
+		if(optionsSupsTemplate != null)
+		{
+			for (OptionSupTemplate opt : optionsSupsTemplate) {
+				checkMapOption.put(opt.getId(), Boolean.FALSE);
+	        }
+		}
 	}
 	
 	public void updateMotorisationOnIdChanged()
@@ -307,19 +312,5 @@ public class ConfigurationVoiture
 				break;
 			}
 		}
-	}
-	
-	public void updateOptionOnIdChanged()
-	{
-		this.optionSup = null;
-		for(OptionSupTemplate ot : optionsSupsTemplate)
-		{
-			if(ot.getId().equalsIgnoreCase(optionSupId))
-			{
-				this.optionSup = ot;
-				break;
-			}
-		}
-	}
-	
+	}	
 }
